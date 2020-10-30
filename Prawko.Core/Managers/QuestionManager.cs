@@ -2,7 +2,6 @@
 using Prawko.Core.Managers.Excel;
 using Prawko.Core.Managers.Factories;
 using Prawko.Core.Managers.Models;
-using Prawko.Core.Managers.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

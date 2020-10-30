@@ -5,7 +5,6 @@ using Prawko.Core.Managers.Models;
 using Prawko.Core.Managers.Providers;
 using Prawko.Core.Managers.QuestionSelectors;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,8 +29,7 @@ namespace Prawko.Core
                 ? ProgressTrackerManager.Load(_progressStorage)
                 : _kernel.Get<ProgressTrackerManager>();
 
-            _kernel
-                .Bind<ProgressTrackerManager>()
+            _kernel.Bind<ProgressTrackerManager>()
                 .ToConstant(_progressTrackerManager);
 
             _questionManager = _kernel.Get<QuestionManager>();

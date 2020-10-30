@@ -16,7 +16,6 @@ namespace Prawko.Core.Managers.Providers
             };
         }
 
-
         private MediaType GetMediaTypeCore(string mediaFilename)
         {
             if( string.IsNullOrEmpty(mediaFilename) ) return MediaType.None;

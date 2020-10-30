@@ -13,6 +13,5 @@ namespace Prawko.Core.Managers.Models
         public MediaInfo MediaInfo { get; set; }
         public IEnumerable<Answer> Answers { get; set; }
         public IEnumerable<DrivingLicenseCategory> DrivingLicenseCategories { get; set; }
-
     }
 }

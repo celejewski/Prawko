@@ -20,7 +20,6 @@ namespace Prawko.Core.Managers
             return new ProgressTrackerManager(dictionary);
         }
 
-
         public ProgressTrackerManager()
             : this(new Dictionary<int, ProgressTracker>())
         {
