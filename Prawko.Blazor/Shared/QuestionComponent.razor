@@ -1,0 +1,66 @@
+﻿<div class="question-container @GetAnswerClass(HasSelectedCorrectAnswer)">
+    <h1>Pytanie za @Question.Points punkty</h1>
+    @if( Question.MediaInfo.MediaType == MediaType.Image )
+    {
+        <img src="@Question.MediaInfo.Path" />
+    }
+    else if( Question.MediaInfo.MediaType == MediaType.Video )
+    {
+        <video controls src="@Question.MediaInfo.Path" />
+    }
+    else
+    {
+        <div></div>
+    }
+    <div class="question">@Question.Text</div>
+    @foreach( var answer in Question.Answers )
+    {
+        <div @onclick="() => OnSelectAnswer(Question, answer.IsCorrect)"
+             class="answer @GetAnswerClass(answer.IsCorrect)">@answer.Text</div>
+        }
+
+</div>
+@code {
+    private Question _question;
+    [Parameter]
+    public Question Question
+    {
+        get => _question; set
+        {
+            _question = value;
+            ShowCorrectAnswer = false;
+            HasSelectedCorrectAnswer = false;
+            HasAnswered = false;
+        }
+    }
+
+    [Parameter]
+    public Func<Question, bool, Task> OnSelectAnswerCallback { get; set; }
+
+    [Parameter]
+    public bool IsPractice { get; set; }
+
+    public bool ShowCorrectAnswer { get; set; } = false;
+    public bool HasSelectedCorrectAnswer { get; set; } = false;
+    public bool HasAnswered { get; set; } = false;
+
+    private async Task OnSelectAnswer(Question question, bool isCorrectAnswer)
+    {
+        if( HasAnswered ) return;
+
+        HasAnswered = true;
+        ShowCorrectAnswer = IsPractice;
+        HasSelectedCorrectAnswer = isCorrectAnswer;
+        await OnSelectAnswerCallback(question, isCorrectAnswer);
+    }
+
+    private string GetAnswerClass(bool isCorrectAnswer)
+    {
+        if( !ShowCorrectAnswer ) return String.Empty;
+
+        return isCorrectAnswer
+            ? "correct-answer"
+            : "incorrect-answer";
+
+    }
+}

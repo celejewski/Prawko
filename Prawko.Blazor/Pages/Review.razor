@@ -1,0 +1,44 @@
+﻿@page "/Review"
+@inject DomainFacade DomainFacade
+
+<h1>Review</h1>
+<QuestionComponent Question="CurrentQuestion" OnSelectAnswerCallback="OnSelectAnswer" IsPractice="true" />
+
+@code {
+    private List<Question> _questions;
+    private List<Question> Questions
+    {
+        get
+        {
+            return _questions ??= RestartQuestions();
+        }
+    }
+
+    private int _currentIndex = 0;
+    private Question CurrentQuestion { get => Questions[_currentIndex]; }
+
+    public async Task OnSelectAnswer(Question question, bool isCorrectAnswer)
+    {
+        var score = isCorrectAnswer ? 1 : -1;
+        var delay = isCorrectAnswer ? 400 : 2500;
+        DomainFacade.AddScore(question.Id, score);
+        await Task.Delay(delay);
+        NextQuestion();
+    }
+
+    private void NextQuestion()
+    {
+        _currentIndex++;
+        if (_currentIndex == Questions.Count)
+        {
+            _questions = RestartQuestions();
+        }
+        StateHasChanged();
+    }
+
+    private List<Question> RestartQuestions()
+    {
+        _currentIndex = 0;
+        return DomainFacade.SelectReviewQuestions(Language.PL, DrivingLicenseCategory.B).ToList();
+    }
+}
