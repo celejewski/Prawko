@@ -1,5 +1,6 @@
-﻿using Prawko.Core.Managers.Providers;
-using System;
+﻿using Microsoft.Extensions.Options;
+using Prawko.Blazor.Configs;
+using Prawko.Core.Managers.Providers;
 using System.IO;
 
 namespace Prawko.Blazor.Services
@@ -7,9 +8,9 @@ namespace Prawko.Blazor.Services
     public class MediaInfoLocalFileProvider : MediaInfoBaseProvider
     {
         private readonly string _mediaDirectory;
-        public MediaInfoLocalFileProvider(string mediaDirectory)
+        public MediaInfoLocalFileProvider(IOptions<DirectoryOptions> options)
         {
-            _mediaDirectory = mediaDirectory;
+            _mediaDirectory = options.Value.MediaRelativeDirectory;
         }
 
         protected override string GetMediaUri(string mediaFilename)

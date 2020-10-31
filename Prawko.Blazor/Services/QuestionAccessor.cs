@@ -1,4 +1,6 @@
-﻿using Prawko.Core;
+﻿using Microsoft.Extensions.Options;
+using Prawko.Blazor.Configs;
+using Prawko.Core;
 using Prawko.Core.Managers.Enums;
 using Prawko.Core.Managers.Models;
 using Prawko.Core.Managers.Providers;
@@ -11,11 +13,14 @@ namespace Prawko.Blazor.Services
     {
 
         private readonly DomainFacade _domainFacade;
-        public QuestionAccessor(IProgressStorage progressStorage)
+        public QuestionAccessor(
+            IOptions<DirectoryOptions> options,
+            MediaInfoLocalFileProvider mediaInfoLocalFileProvider,
+            IProgressStorage progressStorage)
         {
             _domainFacade = new DomainFacade(
-                @"C:\Users\xyz\Downloads\PRAWOJAZDY\baza.xlsx",
-                new MediaInfoLocalFileProvider("media"),
+                options.Value.QuestionFullPath,
+                mediaInfoLocalFileProvider,
                 progressStorage
             );
         }

@@ -1,24 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.JSInterop;
+﻿using Microsoft.Extensions.Options;
+using Prawko.Blazor.Configs;
 using Prawko.Core.Managers.Providers;
-using System;
 using System.IO;
 
 namespace Prawko.Blazor.Services
 {
-    public class LocalProgressStorageWithCookies : IProgressStorage
+    public class LocalProgressStorageUsingGuid : IProgressStorage
     {
         private readonly string _guid;
-        private const string _savesDirectory = @"Saves";
-        public LocalProgressStorageWithCookies(IHttpContextAccessor httpContextAccessor)
+        private readonly string _savesDirectory;
+        public LocalProgressStorageUsingGuid(IOptions<DirectoryOptions> options, GuidProvider guidProvider)
         {
+            _savesDirectory = options.Value.SavesDirectory;
             if( !Directory.Exists(_savesDirectory) )
             {
                 Directory.CreateDirectory(_savesDirectory);
             }
-
-            const string key = "GUID";
-            _guid = (string) httpContextAccessor.HttpContext.Items[key];
+            _guid = guidProvider.GetGuid();
         }
 
         private string GetFullPath()

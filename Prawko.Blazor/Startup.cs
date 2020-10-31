@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Prawko.Blazor.Middleware;
+using Prawko.Blazor.Configs;
+using Prawko.Blazor.Middlewares;
 using Prawko.Blazor.Services;
-using Prawko.Core;
 using Prawko.Core.Managers.Providers;
 
 namespace Prawko.Blazor
@@ -21,8 +21,6 @@ namespace Prawko.Blazor
 
         public IConfiguration Configuration { get; }
 
-        private const string _mediaDirectory = @"C:\Users\xyz\Downloads\PRAWOJAZDY\Converted480p";
-
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -30,8 +28,12 @@ namespace Prawko.Blazor
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IProgressStorage, LocalProgressStorageWithCookies>();
+            services.AddTransient<GuidProvider, GuidProvider>();
+            services.AddSingleton<MediaInfoLocalFileProvider>();
+            services.AddTransient<IProgressStorage, LocalProgressStorageUsingGuid>();
             services.AddTransient<QuestionAccessor>();
+            services.Configure<DirectoryOptions>(Configuration.GetSection("Directories"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,10 +50,14 @@ namespace Prawko.Blazor
 
             app.UseMiddleware<SetGuidMiddleware>();
             app.UseStaticFiles();
+
+            var directoryOptions = new DirectoryOptions();
+            Configuration.GetSection("Directories")
+                .Bind(directoryOptions);
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(_mediaDirectory),
-                RequestPath = "/media"
+                FileProvider = new PhysicalFileProvider(directoryOptions.MediaAbsoluteDirectory),
+                RequestPath = directoryOptions.MediaRelativeDirectory
             });
 
             app.UseRouting();
