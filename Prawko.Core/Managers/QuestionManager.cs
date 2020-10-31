@@ -36,5 +36,10 @@ namespace Prawko.Core.Managers
         }
 
         private readonly List<Question> _questions = new List<Question>();
+
+        public Question GetQuestion(Language language, int id)
+        {
+            return _questions.Single(q => q.Language == language && q.Id == id);
+        }
     }
 }

@@ -56,6 +56,11 @@ namespace Prawko.Core
                 .SelectFrom(shuffledQuestions);
         }
 
+        public Question GetQuestion(Language language, int id)
+        {
+            return _questionManager.GetQuestion(language, id);
+        }
+
         public void AddScore(int questionId, float score)
         {
             _progressTrackerManager.AddScore(questionId, score);

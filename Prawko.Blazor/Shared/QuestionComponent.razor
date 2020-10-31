@@ -1,5 +1,4 @@
 ﻿<div class="question-container @GetAnswerClass(HasSelectedCorrectAnswer)">
-    <h1>Pytanie za @Question.Points punkty</h1>
     @if( Question.MediaInfo.MediaType == MediaType.Image )
     {
         <img src="@Question.MediaInfo.Path" />
@@ -12,12 +11,25 @@
     {
         <div></div>
     }
-    <div class="question">@Question.Text</div>
+    <div class="question">
+        @Question.Text
+    </div>
+    @{
+        var index = 0;
+        var letters = "ABC";
+    }
     @foreach( var answer in Question.Answers )
     {
         <div @onclick="() => OnSelectAnswer(Question, answer.IsCorrect)"
-             class="answer @GetAnswerClass(answer.IsCorrect)">@answer.Text</div>
-        }
+             class="answer @GetAnswerClass(answer.IsCorrect)">
+            <div class="answer__header">@letters[index++]</div>
+            <div class="answer__text">@answer.Text</div>
+        </div>
+    }
+    <div class="stats">
+        <div>#@Question.Id</div>
+        <div>+@Question.Points</div>
+    </div>
 
 </div>
 @code {
@@ -51,7 +63,11 @@
         HasAnswered = true;
         ShowCorrectAnswer = IsPractice;
         HasSelectedCorrectAnswer = isCorrectAnswer;
-        await OnSelectAnswerCallback(question, isCorrectAnswer);
+
+        if( OnSelectAnswerCallback != null )
+        {
+            await OnSelectAnswerCallback(question, isCorrectAnswer);
+        }
     }
 
     private string GetAnswerClass(bool isCorrectAnswer)

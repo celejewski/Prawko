@@ -1,0 +1,14 @@
+﻿@page "/Learn/{id:int}"
+@inject DomainFacade DomainFacade
+
+    <div class="container">
+        <div></div>
+        <QuestionComponent IsPractice="true" Question="Question" />
+    </div>
+
+    @code {
+        [Parameter]
+        public int Id { get; set; }
+
+        private Question Question => DomainFacade.GetQuestion(Language.PL, Id);
+    }
