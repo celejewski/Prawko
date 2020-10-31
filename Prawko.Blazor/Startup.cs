@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Prawko.Blazor.Middleware;
 using Prawko.Blazor.Services;
 using Prawko.Core;
+using Prawko.Core.Managers.Providers;
 
 namespace Prawko.Blazor
 {
@@ -26,12 +29,9 @@ namespace Prawko.Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            var domainFacade = new DomainFacade(
-                @"C:\Users\xyz\Downloads\PRAWOJAZDY\baza.xlsx",
-                new MediaInfoLocalFileProvider("media"),
-                new LocalProgressStorage()
-            );
-            services.AddSingleton(domainFacade);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IProgressStorage, LocalProgressStorageWithCookies>();
+            services.AddTransient<QuestionAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +46,7 @@ namespace Prawko.Blazor
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseMiddleware<SetGuidMiddleware>();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Prawko.Core\Prawko.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Saves\" />
+  </ItemGroup>
+
 </Project>

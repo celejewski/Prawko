@@ -1,5 +1,5 @@
 ﻿@page "/Exam"
-@inject DomainFacade DomainFacade
+@inject QuestionAccessor QuestionAccessor
 
 <div class="container">
     @if( ShowResult )
@@ -43,7 +43,7 @@
     public async Task OnSelectAnswer(Question question, bool isCorrectAnswer)
     {
         var score = isCorrectAnswer ? 1 : -1;
-        DomainFacade.AddScore(question.Id, score);
+        QuestionAccessor.AddScore(question.Id, score);
         if (isCorrectAnswer)
         {
             TotalPoints += question.Points;
@@ -64,6 +64,6 @@
     private List<Question> RestartQuestions()
     {
         _currentIndex = 0;
-        return DomainFacade.SelectExamQuestions(Language.PL, DrivingLicenseCategory.B).ToList();
+        return QuestionAccessor.SelectExamQuestions(Language.PL, DrivingLicenseCategory.B);
     }
 }
