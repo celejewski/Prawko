@@ -11,7 +11,6 @@ namespace Prawko.Blazor.Services
 {
     public class QuestionAccessor
     {
-
         private readonly DomainFacade _domainFacade;
         public QuestionAccessor(
             IOptions<DirectoryOptions> options,
@@ -43,6 +42,11 @@ namespace Prawko.Blazor.Services
         public void AddScore(int questionId, float score)
         {
             _domainFacade.AddScore(questionId, score);
+        }
+
+        public Stats GetStats(Language language, DrivingLicenseCategory drivingLicenseCategory)
+        {
+            return _domainFacade.GetStats(language, drivingLicenseCategory);
         }
     }
 }

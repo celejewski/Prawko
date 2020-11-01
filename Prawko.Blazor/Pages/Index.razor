@@ -1,15 +1,29 @@
 ﻿@page "/"
+@inject QuestionAccessor QuestionAccessor
+
 
 <div class="container main-menu">
     <h1>Prawo jazdy</h1>
-    <div>
         <a href="/Exam">
             Egzamin
         </a>
-    </div>
-    <div>
-        <a href="/Review">
+
+    <a href="/Review">
             Powtórka
-        </a>
+    </a>
+    <div>
+        <span>Attempts total: @_stats.AttemptsTotal</span><br />
+        <span>Questions total: @_stats.QuestionsTotal</span><br />
+        <span>Questions explored: @_stats.QuestionsExplored</span><br />
+        <span>Questions explored: @_stats.QuestionsExploredPercentage.ToString("F2")%</span><br />
     </div>
 </div>
+
+@code {
+    private Stats _stats;
+
+        protected override void OnParametersSet()
+        {
+        _stats = QuestionAccessor.GetStats(Language.PL, DrivingLicenseCategory.B);
+        }
+}

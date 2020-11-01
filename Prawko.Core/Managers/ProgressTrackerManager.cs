@@ -66,5 +66,10 @@ namespace Prawko.Core.Managers
             var serialized = JsonSerializer.Serialize(_progressTrackers.Values.ToArray());
             progressStorage.Save(serialized);
         }
+
+        public IEnumerable<ProgressTracker> GetProgressTrackers(IEnumerable<int> ids)
+        {
+            return ids.Select(id => GetProgressTracker(id));
+        }
     }
 }

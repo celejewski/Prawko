@@ -121,20 +121,19 @@ html {
     padding: 2rem;
 }
 
-.main-menu > div {
-    font-size: 2rem;
-    border: 1px solid black;
-    border-radius: 0.5em;
+    .main-menu > a {
+        font-size: 2rem;
+        border: 1px solid black;
+        border-radius: 0.5em;
+        width: 30%;
+        padding: 1rem;
+        text-align: center;
+        margin: 0.3em;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
+    }
 
-    width: 30%;
-    padding: 1rem;
-    text-align: center;
-    margin: 0.3em;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
-}
-
-.main-menu > div:hover {
-    transform: scale(1.05);
-    background-color: white;
-    transition-duration: 300ms;
-}
+    .main-menu > a:hover {
+        transform: scale(1.05);
+        background-color: white;
+        transition-duration: 300ms;
+    }

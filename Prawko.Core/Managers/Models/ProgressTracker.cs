@@ -15,6 +15,6 @@ namespace Prawko.Core.Managers.Models
 
         public DateTime LastScored { get; set; } = DateTime.MinValue;
 
-        public float GetAttemptCount() => Scores.Count;
+        public int GetAttemptCount() => Scores.Count;
     }
 }

@@ -66,5 +66,13 @@ namespace Prawko.Core
             _progressTrackerManager.AddScore(questionId, score);
             _progressTrackerManager.Save(_progressStorage);
         }
+
+        public Stats GetStats(Language language, DrivingLicenseCategory drivingLicenseCategory)
+        {
+            var questions = _questionManager.GetQuestions(language, drivingLicenseCategory);
+            var ids = questions.Select(q => q.Id);
+            var progressTrackers = _progressTrackerManager.GetProgressTrackers(ids);
+            return new Stats(progressTrackers);
+        }
     }
 }
