@@ -27,7 +27,11 @@
         </div>
     }
     <div class="stats">
-        <div>#@Question.Id</div>
+        <div>
+            <NavLink href=@($"Learn/{Question.Id}")>
+                #@Question.Id
+            </NavLink>
+        </div>
         <div>+@Question.Points</div>
     </div>
 

@@ -31,6 +31,13 @@ html {
     padding: 1rem;
 }
 
+    .question-container > img {
+        width: 100%;
+    }
+    .question-container > video {
+        width: 100%;
+    }
+
 .correct-answer {
     background: #CDFFC6;
 }
