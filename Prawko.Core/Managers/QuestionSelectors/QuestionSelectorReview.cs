@@ -8,6 +8,7 @@ namespace Prawko.Core.Managers.QuestionSelectors
     public class QuestionSelectorReview : IQuestionSelector
     {
         private readonly ProgressTrackerManager _progressTrackerManager;
+        private static readonly Random _random = new Random();
 
         public QuestionSelectorReview(ProgressTrackerManager progressTrackerManager)
         {
@@ -18,7 +19,16 @@ namespace Prawko.Core.Managers.QuestionSelectors
         {
             return questions
                 .OrderBy(q => _progressTrackerManager.GetScoreOfLastAttempts(q.Id, 5))
+                .ThenBy(q => GetRandomIntBasedOnPoints(q.Points))
                 .Take(20);
+        }
+
+        private static int GetRandomIntBasedOnPoints(int points)
+        {
+            return Enumerable
+                .Range(0, points)
+                .Select(_ => _random.Next())
+                .Min();
         }
     }
 }
